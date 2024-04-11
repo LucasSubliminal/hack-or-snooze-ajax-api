@@ -1,0 +1,63 @@
+/* Lists of stories */
+
+.stories-list {
+  margin: 20px 5px;
+}
+
+.stories-list > li {
+  color: gray;
+  font-size: 0.8rem;
+  margin: 10px 0;
+}
+
+#stories-loading-msg {
+  font-weight: bold;
+  font-size: 150%;
+  margin: 20px 30px;
+}
+
+
+/* Individual stories */
+
+.story-link {
+  color: black;
+  font-size: 0.85rem;
+  font-weight: normal;
+  margin: 18px 0;
+}
+
+.story-link:hover {
+  text-decoration: none;
+}
+
+.story-author {
+  margin-left: 2em;
+}
+
+.story-user {
+  display: block;
+}
+
+#submittedStories {
+  background-color: rgb(244, 244, 236);
+}
+#submittedStories, .story-author {
+  margin-left: 2em;
+}
+
+#submittedStories, .story-user {
+  display: block;
+}
+
+#submittedStories, .story-hostname {
+  font-size: smaller;
+  color: gray;
+}
+#submittedStories, small.story-user {
+  margin-left: 2em;
+}
+
+#submittedStories, li {
+  list-style-type: decimal;
+}
+

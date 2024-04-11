@@ -117,26 +117,22 @@ async function addFavorites(user, { username, storyId }) {
 async function removeFavorites(user, { username, storyId }) {
   const token = user.loginToken;
   try {
-    // Attempt to remove the story from favorites via the API
     await axios({
       method: "DELETE",
       url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
       data: { token },
     });
 
-    // Find the index of the story in the user's favorites
     const storyIndex = user.favorites.findIndex(story => story.storyId === storyId);
     if (storyIndex > -1) {
-      // Remove the story from the favorites array
       user.favorites.splice(storyIndex, 1);
-      // Save the updated favorites list to local storage
       saveUserToFavorites(user);
     }
     
-    // No need to return a story here since we're removing it
+  
   } catch (error) {
     console.error("Failed to remove favorite:", error);
-    throw error; // Rethrow or handle error as appropriate
+    throw error; 
   }
 }
 
@@ -145,21 +141,21 @@ document.querySelector('.favorites').addEventListener('click', toggleFavoriteSto
 let showingFavorites = false; 
 
 function toggleFavoriteStoriesVisibility() {
-  showingFavorites = !showingFavorites; // Toggle visibility state
+  showingFavorites = !showingFavorites; 
 
   const stories = document.querySelectorAll('#all-stories-list li');
   stories.forEach(story => {
     const checkbox = story.querySelector('.favorite-checkbox');
     if (checkbox) {
       if (showingFavorites && !checkbox.checked) {
-        // Hide non-favorites when showing only favorites
+       
         story.style.display = 'none';
       } else {
-        // Show all stories otherwise
+        
         story.style.display = '';
-        // If currently showing favorites, ensure the "Remove" button is available
+       
         if (showingFavorites) {
-          // Check if the "Remove" button does not exist and add it
+        
           if (!story.querySelector('.remove-favorite-btn') && checkbox.checked) {
             let removeBtn = document.createElement('button');
             removeBtn.textContent = 'Remove';
@@ -167,12 +163,11 @@ function toggleFavoriteStoriesVisibility() {
             removeBtn.classList.add('remove-favorite-btn');
             removeBtn.addEventListener('click', async function(event) {
               await removeFavorites(currentUser, { username: currentUser.username, storyId: checkbox.dataset.storyId });
-              story.remove(); // Remove the story element from the DOM
+              story.remove(); 
             });
             story.appendChild(removeBtn);
           }
         } else {
-          // Remove the "Remove" button if not in favorite mode
           let removeBtn = story.querySelector('.remove-favorite-btn');
           if (removeBtn) {
             removeBtn.remove();
@@ -196,7 +191,7 @@ async function loadUserFavorites() {
 }
 
 
-// Assuming `submittedStories` is the element that contains the stories
+
 const submittedStories = document.getElementById('submittedStories');
 
 document.getElementById('addStoryForm').addEventListener('submit', async function addNewStory(evt){
@@ -207,11 +202,11 @@ document.getElementById('addStoryForm').addEventListener('submit', async functio
   const username = currentUser.username;
   const storyData = { title, author, url, username };
   const story = await storyList.addStory(currentUser, storyData);
-  let storyMarkup = generateStoryMarkup(story);  // Ensure generateStoryMarkup function is defined and working
+  let storyMarkup = generateStoryMarkup(story);  
   submittedStories.append(storyMarkup);
 });
 
-let showingSubmitted = false; // Assuming this is defined at a higher scope
+let showingSubmitted = false; 
 
 function toggleMyStoriesVisible() {
   showingSubmitted = !showingSubmitted;
@@ -220,26 +215,26 @@ function toggleMyStoriesVisible() {
   const allStories = document.querySelectorAll('#all-stories-list li');
   allStories.forEach(story => {
     if (showingSubmitted) {
-      // Assuming each story has a data attribute `data-username` for the poster's username
+     
       if (story.dataset.username !== currentUser.username) {
         story.style.display = 'none';
       }
     } else {
-      story.style.display = 'block'; // Show all stories when not filtering
+      story.style.display = 'block';
     }
   });
 }
 
-// Attach the event listener
+
 document.querySelector('.stories').addEventListener('click', toggleMyStoriesVisible);
 
 document.querySelector('.favorites').addEventListener('click', async function(event) {
   if (event.target.classList.contains('remove-favorite-btn')) {
     const storyId = event.target.dataset.storyId;
-    const username = currentUser.username; // Ensure currentUser is defined globally
+    const username = currentUser.username;
 
     await removeFavorites(currentUser, { username, storyId });
-    event.target.parentElement.remove(); // Remove the story element from the DOM
+    event.target.parentElement.remove(); 
     
   }
 });
